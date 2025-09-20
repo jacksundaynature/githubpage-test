@@ -41,9 +41,16 @@
     <!-- End Google Tag Manager (noscript) -->
     <h1>ダミーイラスト ダウンロードサンプル</h1>
 
+    <!-- 検索バーを追加 -->
+    <div style="margin:12px 0 16px;display:flex;gap:8px;align-items:center">
+      <input id="searchInput" type="search" placeholder="タグまたはキーワードで検索（例: sea, leaf）" style="flex:1;padding:8px;border-radius:6px;border:1px solid #ccc">
+      <button id="searchBtn" class="btn" type="button">検索</button>
+      <button id="clearSearch" class="btn secondary" type="button">クリア</button>
+    </div>
+
     <div class="grid" id="gallery">
       <!-- サムネイル（inline SVG を使ったダミー） -->
-      <button class="thumb" data-name="Sunset" aria-label="Sunset">
+      <button class="thumb" data-name="Sunset" data-tags="sunset,sun,sea,orange" aria-label="Sunset">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
           <rect width="100" height="100" fill="#ffd54f"/>
           <circle cx="50" cy="50" r="20" fill="#ff7043"/>
@@ -51,7 +58,7 @@
         </svg>
       </button>
 
-      <button class="thumb" data-name="Mountain" aria-label="Mountain">
+      <button class="thumb" data-name="Mountain" data-tags="mountain,green,peak,nature" aria-label="Mountain">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
           <rect width="100" height="100" fill="#a5d6a7"/>
           <polygon points="10,90 50,20 90,90" fill="#2e7d32"/>
@@ -59,7 +66,7 @@
         </svg>
       </button>
 
-      <button class="thumb" data-name="Abstract" aria-label="Abstract">
+      <button class="thumb" data-name="Abstract" data-tags="abstract,shapes,pink,art" aria-label="Abstract">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
           <rect width="100" height="100" fill="#ef9a9a"/>
           <circle cx="30" cy="30" r="18" fill="#f48fb1" />
@@ -67,7 +74,7 @@
         </svg>
       </button>
 
-      <button class="thumb" data-name="Sea" aria-label="Sea">
+      <button class="thumb" data-name="Sea" data-tags="sea,water,blue,waves" aria-label="Sea">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
           <rect width="100" height="100" fill="#b3e5fc"/>
           <path d="M0 70 Q25 55 50 70 T100 70 L100 100 L0 100 Z" fill="#0288d1"/>
@@ -75,14 +82,14 @@
         </svg>
       </button>
 
-      <button class="thumb" data-name="Leaf" aria-label="Leaf">
+      <button class="thumb" data-name="Leaf" data-tags="leaf,green,nature,plant" aria-label="Leaf">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
           <rect width="100" height="100" fill="#e8f5e9"/>
           <path d="M10 50 C30 10,70 10,90 50 C70 90,30 90,10 50 Z" fill="#43a047"/>
         </svg>
       </button>
 
-      <button class="thumb" data-name="CircleArt" aria-label="CircleArt">
+      <button class="thumb" data-name="CircleArt" data-tags="circle,pattern,purple,art" aria-label="CircleArt">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
           <rect width="100" height="100" fill="#f3e5f5"/>
           <g fill="#8e24aa" opacity="0.85">
@@ -128,8 +135,47 @@
       const closeBtn = document.getElementById('closeBtn');
       const closeBtn2 = document.getElementById('closeBtn2');
 
+      // 検索関連要素
+      const searchInput = document.getElementById('searchInput');
+      const clearSearch = document.getElementById('clearSearch');
+      const searchBtn = document.getElementById('searchBtn');
+
       let currentSvgString = '';
       let currentName = 'image';
+
+      // ギャラリーをフィルタする関数
+      function filterGallery(query){
+        const q = (query || '').toLowerCase().trim();
+        const tokens = q ? q.split(/[\s,]+/).filter(Boolean) : [];
+        const thumbs = gallery.querySelectorAll('.thumb');
+        thumbs.forEach(btn=>{
+          const name = (btn.dataset.name || '').toLowerCase();
+          const tags = (btn.dataset.tags || '').toLowerCase();
+          const hay = name + ' ' + tags;
+          let show = true;
+          if(tokens.length > 0){
+            // 任意のトークンにマッチすれば表示（OR）
+            show = tokens.some(tok => hay.indexOf(tok) !== -1);
+          }
+          btn.style.display = show ? '' : 'none';
+        });
+      }
+
+      // イベント登録
+      // 検索ボタン押下で検索
+      searchBtn.addEventListener('click', ()=> filterGallery(searchInput.value));
+      // Enter キーで検索（フォームがないため keydown を使う）
+      searchInput.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          filterGallery(searchInput.value);
+        }
+      });
+      clearSearch.addEventListener('click', ()=>{
+        searchInput.value = '';
+        filterGallery('');
+        searchInput.focus();
+      });
 
       function openModal(svgString, name){
         currentSvgString = svgString;
