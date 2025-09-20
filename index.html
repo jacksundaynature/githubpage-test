@@ -8,12 +8,231 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-M58GSLD2');</script>
     <!-- End Google Tag Manager -->
-    </head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>イラストダウンロード - ダミー</title>
+    <style>
+      /* ギャラリー */
+      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; margin:0;padding:20px;background:#f7f7f7;color:#222}
+      h1{margin:0 0 16px;font-size:20px}
+      .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+      .thumb{background:#fff;border:1px solid #e0e0e0;padding:8px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;height:140px}
+      .thumb svg{width:100%;height:100%;max-width:120px;max-height:120px}
+      .thumb:focus{outline:2px solid #1976d2}
+      /* モーダル */
+      .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:1000;padding:20px}
+      .modal[open]{display:flex}
+      .modal-panel{background:#fff;border-radius:8px;max-width:900px;width:100%;max-height:90vh;overflow:auto;padding:16px;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+      .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+      .modal-body{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+      .preview{flex:1 1 320px;display:flex;align-items:center;justify-content:center;border:1px dashed #ddd;padding:12px;border-radius:6px;background:#fafafa}
+      .preview svg{width:100%;height:auto;max-height:60vh}
+      .controls{width:220px;display:flex;flex-direction:column;gap:8px}
+      button.btn{padding:10px;border-radius:6px;border:0;background:#1976d2;color:white;cursor:pointer}
+      button.btn.secondary{background:#6c757d}
+      .close-btn{background:transparent;border:0;font-size:18px;cursor:pointer}
+      @media(max-width:640px){.modal-body{flex-direction:column}.controls{width:100%}}
+    </style>
+  </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M58GSLD2"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-     <h1>Hello World</h1>
+    <h1>ダミーイラスト ダウンロードサンプル</h1>
+
+    <div class="grid" id="gallery">
+      <!-- サムネイル（inline SVG を使ったダミー） -->
+      <button class="thumb" data-name="Sunset" aria-label="Sunset">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect width="100" height="100" fill="#ffd54f"/>
+          <circle cx="50" cy="50" r="20" fill="#ff7043"/>
+          <path d="M0 80 Q50 40 100 80 Z" fill="#6ec6ff"/>
+        </svg>
+      </button>
+
+      <button class="thumb" data-name="Mountain" aria-label="Mountain">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect width="100" height="100" fill="#a5d6a7"/>
+          <polygon points="10,90 50,20 90,90" fill="#2e7d32"/>
+          <polygon points="45,50 50,40 55,50" fill="#c8e6c9"/>
+        </svg>
+      </button>
+
+      <button class="thumb" data-name="Abstract" aria-label="Abstract">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect width="100" height="100" fill="#ef9a9a"/>
+          <circle cx="30" cy="30" r="18" fill="#f48fb1" />
+          <circle cx="70" cy="70" r="22" fill="#ce93d8" />
+        </svg>
+      </button>
+
+      <button class="thumb" data-name="Sea" aria-label="Sea">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect width="100" height="100" fill="#b3e5fc"/>
+          <path d="M0 70 Q25 55 50 70 T100 70 L100 100 L0 100 Z" fill="#0288d1"/>
+          <circle cx="80" cy="20" r="10" fill="#fff59d"/>
+        </svg>
+      </button>
+
+      <button class="thumb" data-name="Leaf" aria-label="Leaf">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect width="100" height="100" fill="#e8f5e9"/>
+          <path d="M10 50 C30 10,70 10,90 50 C70 90,30 90,10 50 Z" fill="#43a047"/>
+        </svg>
+      </button>
+
+      <button class="thumb" data-name="CircleArt" aria-label="CircleArt">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+          <rect width="100" height="100" fill="#f3e5f5"/>
+          <g fill="#8e24aa" opacity="0.85">
+            <circle cx="30" cy="30" r="18"/>
+            <circle cx="70" cy="30" r="18"/>
+            <circle cx="50" cy="65" r="22"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <!-- モーダル -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-panel" role="document">
+        <div class="modal-header">
+          <strong id="modal-title">Preview</strong>
+          <div>
+            <button class="close-btn" id="closeBtn" aria-label="閉じる">&times;</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="preview" id="previewArea" aria-live="polite">
+            <!-- SVG をここに挿入 -->
+          </div>
+          <div class="controls">
+            <button class="btn" id="downloadSvgBtn">SVG をダウンロード</button>
+            <button class="btn" id="downloadPngBtn">PNG をダウンロード</button>
+            <button class="btn secondary" id="closeBtn2">閉じる</button>
+            <small style="color:#666">選択したイラストは SVG と PNG でダウンロードできます。</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ギャラリー -> モーダルの基本ロジック
+      const gallery = document.getElementById('gallery');
+      const modal = document.getElementById('modal');
+      const previewArea = document.getElementById('previewArea');
+      const modalTitle = document.getElementById('modal-title');
+      const downloadSvgBtn = document.getElementById('downloadSvgBtn');
+      const downloadPngBtn = document.getElementById('downloadPngBtn');
+      const closeBtn = document.getElementById('closeBtn');
+      const closeBtn2 = document.getElementById('closeBtn2');
+
+      let currentSvgString = '';
+      let currentName = 'image';
+
+      function openModal(svgString, name){
+        currentSvgString = svgString;
+        currentName = (name || 'image').replace(/\s+/g,'_');
+        previewArea.innerHTML = svgString;
+        modalTitle.textContent = name || 'Preview';
+        modal.setAttribute('open','');
+        modal.setAttribute('aria-hidden','false');
+      }
+
+      function closeModal(){
+        modal.removeAttribute('open');
+        modal.setAttribute('aria-hidden','true');
+        previewArea.innerHTML = '';
+        currentSvgString = '';
+      }
+
+      gallery.addEventListener('click', (e)=>{
+        const btn = e.target.closest('.thumb');
+        if(!btn) return;
+        const svgEl = btn.querySelector('svg');
+        if(!svgEl) return;
+        // シリアライズ（xmlns を追加しておく）
+        const clone = svgEl.cloneNode(true);
+        if(!clone.getAttribute('xmlns')) clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(clone);
+        openModal(svgString, btn.dataset.name || 'image');
+      });
+
+      // SVG をファイルとしてダウンロード
+      function downloadSVG(svgString, filename){
+        const blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename + '.svg';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      // SVG を PNG に変換してダウンロード
+      function downloadPNG(svgString, filename, scale=2){
+        const img = new Image();
+        const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+        const url = URL.createObjectURL(svgBlob);
+        img.onload = function(){
+          const w = img.width;
+          const h = img.height;
+          // もし幅/高さが0なら viewBox を使う
+          let vw = w, vh = h;
+          // try to parse viewBox
+          const m = svgString.match(/viewBox=["']([\d\s.-]+)["']/);
+          if(m){
+            const parts = m[1].split(/\s+/).map(Number);
+            if(parts.length===4){
+              vw = parts[2]; vh = parts[3];
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = vw * scale;
+          canvas.height = vh * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(function(blob){
+            const a = document.createElement('a');
+            const url2 = URL.createObjectURL(blob);
+            a.href = url2;
+            a.download = filename + '.png';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url2);
+          }, 'image/png');
+          URL.revokeObjectURL(url);
+        };
+        img.onerror = function(){
+          alert('PNG 変換に失敗しました。');
+          URL.revokeObjectURL(url);
+        };
+        img.src = url;
+      }
+
+      downloadSvgBtn.addEventListener('click', ()=> {
+        if(!currentSvgString) return;
+        downloadSVG(currentSvgString, currentName);
+      });
+      downloadPngBtn.addEventListener('click', ()=> {
+        if(!currentSvgString) return;
+        downloadPNG(currentSvgString, currentName);
+      });
+
+      [closeBtn, closeBtn2].forEach(b=>b.addEventListener('click', closeModal));
+      modal.addEventListener('click', (e)=>{
+        if(e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') closeModal();
+      });
+    </script>
   </body>
 </html>
