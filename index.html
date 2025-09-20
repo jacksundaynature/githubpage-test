@@ -162,13 +162,27 @@
       }
 
       // イベント登録
-      // 検索ボタン押下で検索
-      searchBtn.addEventListener('click', ()=> filterGallery(searchInput.value));
+      // 検索ボタン押下で検索（GTMに検索語を送信）
+      searchBtn.addEventListener('click', ()=> {
+        const term = searchInput.value;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'site_search',    // GTMに送るイベント名
+          'search_term': term        // 実際に検索されたキーワード
+        });
+        filterGallery(term);
+      });
       // Enter キーで検索（フォームがないため keydown を使う）
       searchInput.addEventListener('keydown', (e)=>{
         if(e.key === 'Enter'){
           e.preventDefault();
-          filterGallery(searchInput.value);
+          const term = searchInput.value;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'site_search',
+            'search_term': term
+          });
+          filterGallery(term);
         }
       });
       clearSearch.addEventListener('click', ()=>{
