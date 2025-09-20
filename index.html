@@ -219,10 +219,30 @@
 
       downloadSvgBtn.addEventListener('click', ()=> {
         if(!currentSvgString) return;
+        
+        // --- ここから追加 ---
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'file_download_custom', // GTMに送るイベント名
+          'illust_name': currentName,      // イラスト名
+          'file_type': 'svg'               // ファイル形式
+        });
+        // --- ここまで追加 ---
+
         downloadSVG(currentSvgString, currentName);
       });
       downloadPngBtn.addEventListener('click', ()=> {
         if(!currentSvgString) return;
+        
+        // --- ここから追加 ---
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'file_download_custom',
+          'illust_name': currentName,
+          'file_type': 'png'
+        });
+        // --- ここまで追加 ---
+
         downloadPNG(currentSvgString, currentName);
       });
 
